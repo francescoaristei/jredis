@@ -2,7 +2,7 @@
 
 Solution to the Build Your Own Redis Server [CodingChallenge](https://codingchallenges.fyi/challenges/challenge-redis) by John Crickett.
 
-### Characteristics
+### Features
 
 - `RESP` (Redis Serialization Procol) v2
 - Commands Implemented:
@@ -30,7 +30,7 @@ Solution to the Build Your Own Redis Server [CodingChallenge](https://codingchal
 
 - `cd` into project base directory.
 - `mvn dependency:copy-dependencies`
-- Dependencies used:
+- Dependencies:
   - Log4J2
   - Jedis
   - JUnit5
