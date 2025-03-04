@@ -35,11 +35,6 @@ Solution to the Build Your Own Redis Server [CodingChallenge](https://codingchal
   - Jedis
   - JUnit5
 
-### Run Tests
-
-- `cd` into project base directory.
-- `mvn test`.
-
 ### Package
 
 - `cd` into project base directory.
@@ -61,9 +56,13 @@ Solution to the Build Your Own Redis Server [CodingChallenge](https://codingchal
   - `redis-benchmark.exe`
   - `redis-server.exe`
 
+### Run Tests
+
+- `cd` into project base directory.
+- `mvn test`.
+
 ### Benchmark
 
-- After step `Redis for Windows`
 - `.\redis-benchmark -t set,get, -n 100000 -q`:
   - `SET`: 25913.45 requests per second
   - `GET`: 27188.69 requests per second
