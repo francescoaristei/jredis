@@ -4,10 +4,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.io.*;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class RedisDatabase {
     private static RedisDatabase instance;
-    private final Map<String, Entry> database = Collections.synchronizedMap(new HashMap<>());
+    private final Map<String, Entry> database = new ConcurrentHashMap<>();
     private static final Logger log = LogManager.getLogger(RedisDatabase.class);
 
 

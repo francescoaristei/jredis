@@ -4,7 +4,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.example.database.RedisDatabase;
 import org.example.resp.Deserializer;
-import org.example.resp.Serializer;
 import org.example.resp_types.RespDataType;
 import org.example.resp_types.aggregate.RespArray;
 import org.example.resp_types.errors.SimpleError;
@@ -22,27 +21,21 @@ public class RedisRequestHandler implements Runnable{
         this.redisRequestProcessor = new RedisRequestProcessor(redisDatabase);
     }
 
-
     @Override
     public void run() {
         try(BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream())))
         {
             Deserializer deserializer = new Deserializer();
-            Serializer serializer = new Serializer();
             int arrayCommand;
             // possible better strategy: to accumulate input stream into char[]
             while((arrayCommand = bufferedReader.read()) >= 0) {
                 if ((char)arrayCommand != '*') {
-                    bufferedWriter.write(serializer.serializeSimpleError(new SimpleError("ERR: commands are Resp Arrays")).toString());
+                    bufferedWriter.write(new SimpleError("ERR: commands are Resp Arrays").serialize().toString());
                 }
                 RespDataType request = deserializer.deserializeRequest(bufferedReader);
-                if (request instanceof SimpleError) {
-                    bufferedWriter.write(serializer.serializeSimpleError((SimpleError) request).toString());
-                } else {
-                    String result = serializer.serializeRespDataType(redisRequestProcessor.processRequest((RespArray) request)).toString();
-                    bufferedWriter.write(result);
-                }
+                String result = redisRequestProcessor.processRequest((RespArray) request).serialize().toString();
+                bufferedWriter.write(result);
                 bufferedWriter.flush();
             }
         } catch (SocketException e) {
